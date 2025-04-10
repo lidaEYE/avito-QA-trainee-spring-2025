@@ -1,0 +1,1 @@
+# avito-QA-trainee-spring-2025

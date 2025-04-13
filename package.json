@@ -1,0 +1,22 @@
+{
+  "name": "avito-qa-trainee-spring-2025",
+  "version": "1.0.0",
+  "description": "Репозиторий содержит решение тестового задания для стажёров QA-направления в Avito Tech.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lidaEYE/avito-QA-trainee-spring-2025.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lidaEYE/avito-QA-trainee-spring-2025/issues"
+  },
+  "homepage": "https://github.com/lidaEYE/avito-QA-trainee-spring-2025#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/node": "^22.14.1"
+  }
+}

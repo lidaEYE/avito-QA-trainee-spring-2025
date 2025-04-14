@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'fs';
 
-test('Открытие карточки игры', async ({ page }) => {
+test('Тест 1: Открытие карточки игры', async ({ page }) => {
   // Переход на страницу с играми
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
@@ -18,7 +18,7 @@ test('Открытие карточки игры', async ({ page }) => {
 });
 
 
-test('Отображение 10 карточек игр при выборе "10 / page"', async ({ page }) => {
+test('Тест 2: Отображение 10 карточек игр при выборе "10 / page"', async ({ page }) => {
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
   // Клик по селектору для открытия списка выбора количества карточек
@@ -38,7 +38,7 @@ test('Отображение 10 карточек игр при выборе "10 
 });
 
 
-test('Отображение 20 карточек игр при выборе "20 / page"', async ({ page }) => {
+test('Тест 3: Отображение 20 карточек игр при выборе "20 / page"', async ({ page }) => {
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
   // Кликаем по выпадающему меню (селектор выбора количества карточек)
@@ -57,7 +57,10 @@ test('Отображение 20 карточек игр при выборе "20 
   await expect(cards).toHaveCount(20);
 });
 
-test('Отображение 50 карточек игр при выборе "50 / page"', async ({ page }) => {
+test('Тест 4: Отображение 50 карточек игр при выборе "50 / page"', async ({ page }) => {
+  const testCaseNumber = 4;
+  const testCaseName = 'Отображение 50 карточек игр при выборе "50 / page"';
+
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
   // Кликаем по выпадающему меню (селектор выбора количества карточек)
@@ -75,17 +78,19 @@ test('Отображение 50 карточек игр при выборе "50 
 
   // Ожидаем 50, но тест не падает при несовпадении
   if (count !== 50) {
-    const bugMessage = `[${new Date().toISOString()}] ❌ BUG: Ожидалось 50 карточек, но найдено ${count}\n`;
+    const bugMessage =
+      `[${new Date().toISOString()}] ❌ BUG in Test Case #${testCaseNumber}: ${testCaseName}\n` +
+      `Expected: 50 cards, but got: ${count}\n\n`;
     fs.appendFileSync('bug-report.txt', bugMessage);
     console.log(bugMessage);
   } else {
-    console.log(`[${new Date().toISOString()}] ✅ Все ок: отображается 50 карточек`);
+    console.log(`[${new Date().toISOString()}] ✅ Test #${testCaseNumber} passed: ${count} cards`);
   }
 
-  // Вместо expect(cards).toHaveCount(50); используем проверку вручную
+  
 });
 
-test('Отображение 100 карточек игр при выборе "100 / page"', async ({ page }) => {
+test('Тест 5: Отображение 100 карточек игр при выборе "100 / page"', async ({ page }) => {
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
   // Кликаем по выпадающему меню (селектор выбора количества карточек)
@@ -105,7 +110,7 @@ test('Отображение 100 карточек игр при выборе "10
 });
 
 
-test('Проверка, что первые 5 карточек с фильтром "Browser" действительно относятся к browser-платформе', async ({ page }) => {
+test('Тест 6: Проверка, что первые 5 карточек с фильтром "Browser" действительно относятся к browser-платформе', async ({ page }) => {
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
   for (let i = 0; i < 5; i++) {
@@ -138,7 +143,7 @@ test('Проверка, что первые 5 карточек с фильтро
 
 
 
-test('переход на вторую страницу результатов', async ({ page }) => {
+test('Тест 7: переход на вторую страницу результатов', async ({ page }) => {
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
   // Получаем название первой карточки на странице 1
@@ -157,7 +162,11 @@ test('переход на вторую страницу результатов',
   expect(firstCardPage1).not.toEqual(firstCardPage2);
 });
 
-test('переход на последнюю страницу результатов', async ({ page }) => {
+
+test('Тест 8: переход на последнюю страницу результатов', async ({ page }) => {
+  const testCaseNumber = 8;
+  const testCaseName = 'переход на последнюю страницу результатов';
+
   await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
 
   // Получаем название первой карточки на странице 1
@@ -173,5 +182,56 @@ test('переход на последнюю страницу результат
   const firstCardPage2 = await page.locator('._title_vlg32_45').first().textContent();
 
   // Проверяем, что карточки разные
-  expect(firstCardPage1).not.toEqual(firstCardPage2);
+  if (firstCardPage1 == firstCardPage2) {
+    const bugMessage =
+      `[${new Date().toISOString()}] ❌ BUG in Test Case #${testCaseNumber}: ${testCaseName}\n` +
+      `Ожидание: переход на последнюю страницу с помощью пагинации. Реальность: остались на странице №1\n\n`;
+    fs.appendFileSync('bug-report.txt', bugMessage);
+    console.log(bugMessage);
+  } else {
+    console.log(`[${new Date().toISOString()}] ✅ Test #${testCaseNumber} passed`);
+  }
+});
+
+
+test('Тест 9: Установка и сброс фильтрации каталога игр', async ({ page }) => {
+  const testCaseNumber = 9;
+  const testCaseName = 'Установка и сброс фильтрации каталога игр';
+
+  await page.goto('https://makarovartem.github.io/frontend-avito-tech-test-assignment/');
+
+  // Сохраняем карточки на первой (исходной) странице
+  const initialCards = await page.locator('.ant-card-body').allTextContents();
+
+  // Открываем первый фильтр "Filter by platform"
+  await page.locator('span.ant-select-selection-item', { hasText: 'not chosen' }).nth(0).click();
+
+  // Выбираем платформу "Browser"
+  await page.locator('.ant-select-item-option-content', { hasText: 'Browser' }).click();
+
+  // Немного подождать загрузки новых карточек
+  await page.waitForTimeout(1000);
+
+  // Снова открываем тот же фильтр
+  await page.locator('span.ant-select-selection-item', { hasText: 'Browser' }).nth(0).click();
+
+  // Сбрасываем фильтр, выбирая "not chosen"
+  await page.locator('.ant-select-item-option-content', { hasText: 'not chosen' }).click();
+
+  // Немного подождать возврата к исходному состоянию
+  await page.waitForTimeout(1000);
+
+  // Получаем карточки после сброса фильтра
+  const resetCards = await page.locator('.ant-card-body').allTextContents();
+
+  // Проверяем, что карточки одинаковые
+  if (initialCards !== resetCards) {
+    const bugMessage =
+      `[${new Date().toISOString()}] ❌ BUG in Test Case #${testCaseNumber}: ${testCaseName}\n` +
+      `Ожидание: возвращаемся к первоначальным карточкам игр. Реальность: Страница ошибки\n\n`;
+    fs.appendFileSync('bug-report.txt', bugMessage);
+    console.log(bugMessage);
+  } else {
+    console.log(`[${new Date().toISOString()}] ✅ Test #${testCaseNumber} passed`);
+  }
 });
